@@ -14,6 +14,10 @@
 
 前置：Node ≥ 22.18（原生直跑 TS，零转译）；flint 仓库放在本仓库隔壁 `../Flint`（或用环境变量 `FLINT_ROOT` 指过去）。
 
+**最省事**：双击 `console-run.bat`——自检 node 版本与 flint 位置、起服务、3 秒后自动开浏览器；窗口里 Ctrl+C 优雅关停。环境变量 `CONSOLE_NO_BROWSER=1` 可跳过自动开浏览器。
+
+命令行等价：
+
 ```bash
 node server/main.ts        # 或 npm start
 # 打开 http://localhost:3210
@@ -30,6 +34,7 @@ node verify/verify-e2e-chat.mjs   # 端到端真对话（显式花一次最小 L
 
 ```
 flint-console/
+├── console-run.bat     # 双击启动：自检→起服务→自动开浏览器（Ctrl+C 优雅关停）
 ├── server/
 │   ├── rpc-driver.ts   # spawn flint RPC 子进程；协议配对、超时判死、优雅关停（合stdin→等3s→强杀）
 │   ├── sse-hub.ts      # 事件 → SSE 广播；Last-Event-ID 断线回放（环形缓冲 500 条）

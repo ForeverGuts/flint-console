@@ -26,6 +26,7 @@ driver.on('stderr', (line) => {
 });
 
 const t0 = Date.now();
+let created = null; // 冒烟会话文件名（try 外声明：清理在 try 后，作用域必须够得着）
 try {
   // ① ping：spawn + 协议配对的最小证明
   const pong = await driver.request('ping');
@@ -39,7 +40,7 @@ try {
 
   // ③ create_session：返回文件名
   const name = `verify-console-${Date.now().toString(36)}.jsonl`;
-  const created = await driver.request('create_session', { name });
+  created = await driver.request('create_session', { name });
   check('create_session 返回文件名', typeof created === 'string' && created.includes('verify-console'), String(created));
 
   // ④ list_sessions：能看见刚建的
@@ -60,10 +61,12 @@ await driver.shutdown();
 check('优雅关停（stdin EOF → 自然退出）', !driver.alive);
 
 // ⑦ 自产垃圾清理：verify 建的会话文件删掉（flint sessions 目录是用户的地盘，不留烟头）
-try {
-  unlinkSync(path.join(FLINT_ROOT, 'sessions', String(created)));
-  console.log(`🧹 已清理冒烟会话文件 ${created}`);
-} catch { /* 清理失败不挡判定 */ }
+if (created) {
+  try {
+    unlinkSync(path.join(FLINT_ROOT, 'sessions', String(created)));
+    console.log(`🧹 已清理冒烟会话文件 ${created}`);
+  } catch { /* 清理失败不挡判定 */ }
+}
 
 console.log(`\n${fail === 0 ? '🎉' : '💥'} verify-rpc-driver：${pass} 过 / ${fail} 挂`);
 process.exit(fail === 0 ? 0 : 1);
