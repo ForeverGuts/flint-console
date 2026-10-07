@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>flint-console · flint 的第二张脸</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo">◆</span>
+      <span class="title">flint-console</span>
+      <span class="subtitle">同一核心，第二张脸</span>
+    </div>
+    <div class="status">
+      <span id="conn-dot" class="dot dot-off" title="SSE 连接状态"></span>
+      <span id="conn-text">连接中…</span>
+      <span class="sep">|</span>
+      <span id="session-info">会话信息加载中…</span>
+      <button id="btn-clear" class="ghost-btn" title="清空当前 flint 会话（POST /api/clear）">清空会话</button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <!-- 左列：聊天流（M1 闭环的主体） -->
+    <section class="chat-panel">
+      <div id="chat-log" class="chat-log">
+        <div class="hello card">
+          <p><strong>flint-console v0.1（M1 骨架）</strong></p>
+          <p>在下方输入，消息经本机服务 <code>POST /api/chat</code> 转给 flint（RPC 模式子进程），
+             回复与中间过程经 <code>SSE</code> 流回来。flint 源码一行未动。</p>
+          <p class="muted">右侧两块是刻意留白：时间线已能点亮工具节点（最简版），安全闸的可视化与确认按钮流等拷问后再做。</p>
+        </div>
+      </div>
+      <form id="chat-form" class="chat-form" autocomplete="off">
+        <input id="chat-input" type="text" placeholder="问 flint 点什么…（Enter 发送）" />
+        <button id="btn-send" type="submit">发送</button>
+      </form>
+    </section>
+
+    <!-- 右列：过程面板（时间线 v0 可用；安全闸 v0 = 展示桩） -->
+    <aside class="side-panels">
+      <section class="panel">
+        <h2>工具时间线 <span class="tag">v0 最简版</span></h2>
+        <p class="muted small">tool_call → 点亮节点；tool_call_update → 定格 ✓/✗。耗时、参数摘要、RAG 专属动画 = M2 留白。</p>
+        <div id="timeline" class="timeline"><p class="muted small" id="timeline-empty">（本轮还没有工具调用）</p></div>
+      </section>
+
+      <section class="panel">
+        <h2>安全闸 <span class="tag">v0 展示桩</span></h2>
+        <p class="muted small">现状：RPC 模式下权限自动放行（flint 侧已知边界）。确认按钮流需要 flint 加外部确认通道——见 docs/待拷问清单.md Q1。</p>
+        <div id="gate" class="gate"><p class="muted small" id="gate-empty">（暂无错误/警告事件）</p></div>
+      </section>
+    </aside>
+  </main>
+
+  <script type="module" src="/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+{
+  "name": "flint-console",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "flint 的第二张脸：零依赖 Web 工作台，RPC 驱动 flint 子进程，核心一行不动",
+  "scripts": {
+    "start": "node server/main.ts",
+    "verify": "node verify/run-verify.mjs"
+  },
+  "engines": {
+    "node": ">=22.18"
+  },
+  "keywords": [
+    "agent",
+    "sse",
+    "observability",
+    "zero-dependency",
+    "flint"
+  ],
+  "license": "MIT"
+}
